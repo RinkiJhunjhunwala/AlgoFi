@@ -1,0 +1,78 @@
+name: PR interaction bot
+
+on:
+  pull_request:
+    types: [opened, closed]
+  issues:
+    types: [closed]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  comment-on-activity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Message
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const actor = context.actor;
+            const eventName = context.eventName;
+            const payload = context.payload;
+            
+            let message = '';
+
+            if (eventName === 'pull_request' && payload.action === 'opened') {
+              message = `
+              Hi @${actor}! 👋
+              
+              **Thanks for contributing to ${repo}!** 🎉
+              We appreciate your effort and will review your changes soon.
+              
+              ---
+              ⭐ **Please star the repo if you like it!**
+              👤 **[Follow the owner](https://github.com/${owner}) for updates.**
+              `;
+            } 
+
+            else if (eventName === 'pull_request' && payload.action === 'closed') {
+              if (payload.pull_request.merged) {
+                 message = `
+                 🚀 **PR Merged!** 
+                 
+                 Awesome work, @${actor}! Your contribution has been added. 
+                 Looking forward to more changes from you in the future! 🔥
+                 `;
+              } else {
+                 message = `
+                 ❌ **PR Closed**
+                 
+                 Thanks for your interest, @${actor}. Even though this wasn't merged, we appreciate the effort!
+                 `;
+              }
+            }
+
+            else if (eventName === 'issues' && payload.action === 'closed') {
+              message = `
+              ✅ **Issue Resolved!**
+              
+              Thanks for helping us maintain the repo, @${actor}. 
+              If you have more ideas, feel free to open a new issue!
+              
+              ---
+              ⭐ **Don't forget to star the repo!**
+              `;
+            }
+
+            if (message) {
+              await github.rest.issues.createComment({
+                owner: owner,
+                repo: repo,
+                issue_number: context.issue.number,
+                body: message
+              });
+            }
