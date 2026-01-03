@@ -43,7 +43,7 @@ function NFTCard({ nft, account, onBuySuccess, showActions = true }) {
 
   return (
     <>
-      <div className="bg-slate-800/50 backdrop-blur-lg rounded-xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition group">
+      <div className="bg-slate-800/50 backdrop-blur-lg rounded-xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition group hover-glitter hover:shadow-2xl hover:shadow-purple-500/20 relative">
         {/* Image */}
         <div className="relative aspect-square overflow-hidden bg-slate-700/50">
           {nft.imageUrl ? (
@@ -57,7 +57,7 @@ function NFTCard({ nft, account, onBuySuccess, showActions = true }) {
               <span className="text-6xl">{typeEmojis[nft.type] || '💎'}</span>
             </div>
           )}
-          
+
           {/* Type Badge */}
           <div className="absolute top-3 right-3">
             <span className="px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-white/20">
@@ -80,7 +80,7 @@ function NFTCard({ nft, account, onBuySuccess, showActions = true }) {
           <h3 className="text-xl font-bold text-white mb-2 truncate">
             {nft.name}
           </h3>
-          
+
           {nft.description && (
             <p className="text-gray-400 text-sm mb-3 line-clamp-2">
               {nft.description}
@@ -110,7 +110,7 @@ function NFTCard({ nft, account, onBuySuccess, showActions = true }) {
                     {formatPrice(nft.price)} <span className="text-lg">ALGO</span>
                   </p>
                 </div>
-                
+
                 {showActions && account && account !== nft.creator && (
                   <button
                     onClick={() => setShowBuyModal(true)}
@@ -137,7 +137,7 @@ function NFTCard({ nft, account, onBuySuccess, showActions = true }) {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-slate-800 rounded-2xl p-8 max-w-md w-full border border-purple-500/30">
             <h3 className="text-2xl font-bold text-white mb-4">Confirm Purchase</h3>
-            
+
             <div className="space-y-4 mb-6">
               <div className="flex justify-between">
                 <span className="text-gray-400">NFT:</span>
